@@ -16,11 +16,11 @@
     "operatorsAliases": false
   },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "pinjemin_production",
-    "host": "127.0.0.1",
-    "dialect": "mysql",
+    "username": "lwhbikpbphcsvj",
+    "password": "3893997e0fd53954418e272d23880d422a880b8d18fa1bd3f1a034e02fb94d1a",
+    "database": "d6e01lj1njveg8",
+    "host": "ec2-52-44-55-63.compute-1.amazonaws.com",
+    "dialect": "postgres",
     "operatorsAliases": false
   }
 }
