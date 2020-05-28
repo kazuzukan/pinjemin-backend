@@ -17,14 +17,14 @@ app.use(bodyParser.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const db = require('./models');
-db.sequelize.sync().then(()=>{
-    console.log('Database Synced')
-})
+// const db = require('./models');
+// db.sequelize.sync().then(()=>{
+//     console.log('Database Synced')
+// })
 
-// db.sequelize.sync({ force: true }).then(() => {
-//     console.log("Drop and re-sync db.");
-// });
+db.sequelize.sync({ force: true }).then(() => {
+    console.log("Drop and re-sync db.");
+});
 
 const route = require('./routes/index');
 route(app);
