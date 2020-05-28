@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors')
 const app = express();
+const db = require('./models');
 
 const port = process.env.PORT || 3000;
 
@@ -17,11 +18,11 @@ app.use(bodyParser.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// const db = require('./models');
 // db.sequelize.sync().then(()=>{
 //     console.log('Database Synced')
 // })
 
+//for reset database
 db.sequelize.sync({ force: true }).then(() => {
     console.log("Drop and re-sync db.");
 });
