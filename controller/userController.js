@@ -15,15 +15,19 @@ exports.findAllUser = (req, res) => {
 };
 
 exports.findUserProduct = (req, res) => {
-  const id = req.params.id;
+  const email = req.params.id;
 
-  User.findByPk(id, {
+  User.findAll({
+    where: {
+      email: email
+    },
     include: [
       {
         model: db.product,
         include: [{
           model: db.section
         }]
+        
       },
     ],
   })
@@ -32,7 +36,7 @@ exports.findUserProduct = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error retrieving User with id =" + id,
+        message: "Error retrieving User with email =" + email,
       });
     });
 };
@@ -58,15 +62,18 @@ exports.findUserOrder = (req,res) => {
 }
 
 exports.findOne = (req, res) => {
-  const id = req.params.id;
-
-  User.findByPk(id)
+  const email = req.params.email;
+  User.findAll({
+    where: {
+      email: email
+    }
+  })
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error retrieving User with id =" + id,
+        message: "Error retrieving User with id =" + email,
       });
     });
 };

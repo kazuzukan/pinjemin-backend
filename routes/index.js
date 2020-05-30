@@ -20,7 +20,7 @@ module.exports = (app) => {
   app.get("/userorder/:id", user.findUserOrder);
 
   // Find One User
-  app.get("/user/:id", user.findOne);
+  app.get("/user/:email", user.findOne);
 
   //Create User
   app.post("/user", user.createUser);
