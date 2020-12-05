@@ -31,19 +31,20 @@ module.exports = {
                         res.status(200).send({
                             status: true,
                             messages: "Success",
-                            data: data
+                            results: data
                         })
                     }).catch((error) => {
                         res.status(500).send({
                             status: false,
                             messages: "Some error occurred while register User",
-                            data: error
+                            results: error
                         });
                     })
                 } else {
                     res.status(400).send( {
                         status: false,
-                        messages: 'Email already exsist'
+                        messages: 'Email already exist',
+                        results: null
                     }
                     );
                 }
@@ -54,7 +55,7 @@ module.exports = {
             res.status(500).send({
                 status: false,
                 messages: "Some error occurred while register User",
-                data: error
+                results: error
             });
         }
     },
@@ -74,13 +75,12 @@ module.exports = {
                 });
             }
             const token = jwt.sign({id:user.id}, process.env.TOKEN_SECRET);
-            res.header('auth-token', token).send({token, status:'Success login'});
+            res.header('auth-token', token).send({results: user, token, status: true, messages:'Success login'});
         } else {
             return res.status(400).send({
                 status: false,
                 messages: 'Email is not found'
             });
         }
-        next();
     }
 }
