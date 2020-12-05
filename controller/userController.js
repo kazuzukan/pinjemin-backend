@@ -72,35 +72,33 @@ exports.findOne = (req, res) => {
 };
 
 exports.createUser = (req, res) => {
-  //constructor
-  const user = {
-    firstname: req.body.firstname,
-    lastname: req.body.lastname,
-    address: req.body.address,
-    phone: req.body.phone,
-    gender: req.body.gender,
-    email: req.body.email,
-    password: req.body.password,
-    point: req.body.point,
-    isambassador: req.body.isambassador,
-  };
 
   User.findOrCreate({
     where: { 
-      firstname: user.firstname,
-      email: user.email
+      email: req.body.email
     },
+    defaults: {
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
+      password: req.body.password,
+      address: req.body.address,
+      phone: req.body.phone,
+      gender: req.body.gender,
+      point: req.body.point,
+      isambassador: req.body.isambassador,
+    }
     // default: {
     //   email: user.email,
     // }
   }) .then((data) => {
+    console.log(data)
     res.send(data);
   }) .catch((err) => {
+    console.log(err)
     res.status(500).send({
       message: err.message || "Error udpate User with id =" + id,
     });
   });
-  console.log(firstname);
 };
 
 //   User.create(user)
