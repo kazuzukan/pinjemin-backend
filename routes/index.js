@@ -3,11 +3,18 @@ module.exports = (app) => {
   const product = require("../controller/productController");
   const section = require("../controller/sectionController");
   const order = require("../controller/orderController");
+  const auth = require("../controller/authController");
 
   // Default
   app.get("/", (req, res) => {
     res.json({ Hello: "Welcome to Pinjemin Apps." });
   });
+
+  // Auth
+  // Register
+  app.post("/auth/register", auth.register);
+  // Login
+  app.post("/auth/login", auth.login);
 
   // Customer
   // All User

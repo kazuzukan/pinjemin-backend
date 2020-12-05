@@ -6,10 +6,7 @@ const db = require('./models');
 
 const port = process.env.PORT || 3000;
 
-// const corsOption = {
-//     origin: "http://localhost:3000"
-// };
-
+require('dotenv').config();
 app.use(cors());
 
 // parse requests of content-type - application/json
