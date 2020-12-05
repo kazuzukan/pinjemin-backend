@@ -2,122 +2,158 @@ const db = require("../models");
 const Section = db.section;
 // const Op = db.sequelize.Op;
 
-
-exports.createSection = (req, res) => {
-  //constructor
-  const section = {
-    startDate: req.body.startDate,
-    endDate: req.body.endDate,
-    type: req.body.type,
-    productId: req.body.productId
-  };
-
-  Section.create(section)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
+module.exports = {
+  async findAllSection(req, res) {
+    try {
+      const section = await Section.findAll();
+      res.status(200).send({
+        status: "Success",
+        data: section
+      })
+    } catch (error) {
       res.status(500).send({
-        message: err.message || "Error udpate User with id =" + id,
-      });
-    });
-};
+        status: "error",
+        message: "Some error occured while retrieving Section",
+        data: error
+      })
+    }
+  },
 
-exports.findAllSection = (req, res) => {
-  Section.findAll()
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
+  async findOne(req, res) {
+    try {
+      const id = req.params.id;
+      const section = await Section.findByPk(id);
+      if (section) {
+        res.status(200).send({
+          status: "Success",
+          data: section
+        });
+      } else {
+        res.status(404).send({
+          status: "Success",
+          message: "Section not found"
+        });
+      }
+    } catch (error) {
       res.status(500).send({
-        message: err.message || "Some error occurred while retrieving Users.",
-      });
-    });
-};
+        status: "Error",
+        message: "Some error occurred while retrieving section",
+        data: error
+      })
+    }
+  },
 
-exports.findRequestSection = (req, res) => {
-  Section.findAll({
-    where: {type: 0},
-    include: [
-      {
-        model: db.product,
-      },
-    ],
-  }
-  )
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
+  async create(req, res) {
+    try {
+      const body = {
+        startDate: req.body.startDate,
+        endDate: req.body.endDate,
+        type: req.body.type,
+        productId: req.body.productId
+      };
+      const section = await Section.create(body);
+      res.status(200).send({
+        status: "Success",
+        data: section
+      });
+    } catch (error) {
       res.status(500).send({
-        message: err.message || "Some error occurred while retrieving Users.",
-      });
-    });
-};
+        status: "Error",
+        message: "Some error occurred while create section",
+        data: error
+      })
+    }
+  },
 
-exports.findOfferSection = (req, res) => {
-  Section.findAll({
-    where: {type: 1},
-    include: [
-      {
-        model: db.product,
-      },
-    ],
-  }
-  )
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
+  async update(req, res) {
+    try {
+      const id = req.params.id;
+      const body = {
+        startDate: req.body.startDate,
+        endDate: req.body.endDate,
+        type: req.body.type,
+        productId: req.body.productId
+      };
+      const section = await Section.update(body, {
+        where: {
+          id: id,
+        },
+      });
+      res.status(200).send({
+        status: "Success",
+        data: section
+      });
+    } catch (error) {
       res.status(500).send({
-        message: err.message || "Some error occurred while retrieving Users.",
+        status: "Error",
+        message: "Some error occurred while update section",
+        data: error
       });
-    });
-};
+    }
+  },
 
-exports.updateSection = (req, res) => {
-  const id = req.params.id;
-
-  //constructor
-  const section = {
-    startDate: req.body.startDate,
-    endDate: req.body.endDate,
-    type: req.body.type,
-    productId: req.body.productId
-  };
-
-  Section.update(section, {
-    where: {
-      id: id,
-    },
-  })
-    .then((data) => {
-      res.json({
-        message: "user updated",
+  async delete(req, res) {
+    try {
+      const id = req.params.id;
+      const section = await Section.destroy({
+        where: {
+          id: id,
+        },
       });
-    })
-    .catch((err) => {
+      res.status(200).send({
+        status: "Success",
+        message: `${section} section deleted`
+      })
+    } catch (error) {
       res.status(500).send({
-        message: err.message || "Error udpate User with id =" + id,
+        status: "Error",
+        message: "Some error occurred while delete sectionw3",
+        data: error
       });
-    });
-};
+    }
+  },
 
-exports.deleteSection = (req, res) => {
-  const id = req.params.id;
-
-  Section.destroy({
-    where: {
-      id: id,
-    },
-  })
-    .then((data) => {
-      res.send({ message: `${data} user deleted` });
-    })
-    .catch((err) => {
+  async getAllRequestSection(req, res) {
+    try {
+      // const id = req.params.id;
+      const section = await Section.findAll({
+        where: {type: 0},
+        include: [{
+          model: db.product,
+        }]
+      })
+      res.status(200).send({
+        status: "Success",
+        data: section,
+      })
+    } catch (error) {
       res.status(500).send({
-        message:
-          err.message || "Some error occurred while removing all tutorials.",
-      });
-    });
-};
+        status: "Error",
+        message: "Some error occurred while retrieving User",
+        data: error
+      })
+    }
+  },
+
+  async getAllOfferSection(req, res) {
+    try {
+      // const id = req.params.id;
+      const section = await Section.findAll({
+        where: {type: 1},
+        include: [{
+          model: db.product,
+        }]
+      })
+      res.status(200).send({
+        status: "Success",
+        data: section,
+      })
+    } catch (error) {
+      res.status(500).send({
+        status: "Error",
+        message: "Some error occurred while retrieving User",
+        data: error
+      })
+    }
+  },
+}

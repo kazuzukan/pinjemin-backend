@@ -2,164 +2,184 @@ const db = require("../models");
 const User = db.users;
 // const Op = db.sequelize.Op;
 
-exports.findAllUser = (req, res) => {
-  User.findAll()
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
+module.exports = {
+  async findAllUser(req, res){
+    try {
+      const user = await User.findAll();
+      res.status(200).send({
+        status: "Success",
+        data: user,
+        user: req.user
+      })
+    } catch(error){
       res.status(500).send({
-        message: err.message || "Some error occurred while retrieving Users.",
-      });
-    });
-};
-
-exports.findUserProduct = (req, res) => {
-  const id = req.params.id;
-
-  User.findByPk(id, {
-    include: [
-      {
-        model: db.product,
-        include: [{
-          model: db.section
-        }]
-      },
-    ],
-  })
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: "Error retrieving User with id =" + id,
-      });
-    });
-};
-
-exports.findUserOrder = (req,res) => {
-  const id = req.params.id;
-  User.findByPk(id, {
-    include: [
-      {
-        model: db.order
-      },
-    ],
-  })
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: "Error retrieving User with id =" + id,
-      });
-    });
-
-}
-
-exports.findOne = (req, res) => {
-  const id = req.params.id;
-
-  User.findByPk(id)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: "Error retrieving User with id =" + id,
-      });
-    });
-};
-
-exports.createUser = (req, res) => {
-
-  User.findOrCreate({
-    where: { 
-      email: req.body.email
-    },
-    defaults: {
-      firstname: req.body.firstname,
-      lastname: req.body.lastname,
-      password: req.body.password,
-      address: req.body.address,
-      phone: req.body.phone,
-      gender: req.body.gender,
-      point: req.body.point,
-      isambassador: req.body.isambassador,
+        status: "error",
+        message: "Some error occured while retrieving User",
+        data: error
+      })
     }
-    // default: {
-    //   email: user.email,
-    // }
-  }) .then((data) => {
-    console.log(data)
-    res.send(data);
-  }) .catch((err) => {
-    console.log(err)
-    res.status(500).send({
-      message: err.message || "Error udpate User with id =" + id,
-    });
-  });
-};
+  },
 
-//   User.create(user)
-//     .then((data) => {
-//       res.send(data);
-//     })
-//     .catch((err) => {
-//       res.status(500).send({
-//         message: err.message || "Error udpate User with id =" + id,
-//       });
-//     });
-// };
-
-exports.updateUser = (req, res) => {
-  const id = req.params.id;
-
-  //constructor
-  const user = {
-    firstname: req.body.firstname,
-    lastname: req.body.lastname,
-    address: req.body.address,
-    phone: req.body.phone,
-    gender: req.body.gender,
-    email: req.body.email,
-    password: req.body.password,
-    point: req.body.point,
-    isambassador: req.body.isambassador,
-  };
-
-  User.update(user, {
-    where: {
-      id: id,
-    },
-  })
-    .then((data) => {
-      res.json({
-        message: "user updated",
-      });
-    })
-    .catch((err) => {
+  async findOne(req, res){
+    try {
+      const id = req.params.id;
+      const user = await User.findByPk(id);
+      if (user){
+        res.status(200).send({
+          status: "Success",
+          data: user
+        });
+      } else {
+        res.status(404).send({
+          status: "Success",
+          message: "User not found"
+        });
+      }
+    } catch (error) {
       res.status(500).send({
-        message: err.message || "Error udpate User with id =" + id,
+        status: "Error",
+        message: "Some error occurred while retrieving User",
+        data: error
+      })
+    }
+  },
+
+  async create(req, res) {
+    try {
+      const body = {
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        address: req.body.address,
+        phone: req.body.phone,
+        gender: req.body.gender,
+        email: req.body.email,
+        password: req.body.password,
+        point: req.body.point,
+        isambassador: req.body.isambassador,
+      };
+      const user = await User.create(body);
+      res.status(200).send({
+        status: "Success",
+        data: user
       });
-    });
-};
-
-exports.deleteUser = (req, res) => {
-  const id = req.params.id;
-
-  User.destroy({
-    where: {
-      id: id,
-    },
-  })
-    .then((data) => {
-      res.send({ message: `${data} user deleted` });
-    })
-    .catch((err) => {
+    } catch(error) {
       res.status(500).send({
-        message:
-          err.message || "Some error occurred while removing all tutorials.",
+        status: "Error",
+        message: "Some error occurred while create User",
+        data: error
+      })
+    }
+  }, 
+
+  async update(req, res) {
+    try {
+      const id = req.params.id;
+      const body = {
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        address: req.body.address,
+        phone: req.body.phone,
+        gender: req.body.gender,
+        email: req.body.email,
+        password: req.body.password,
+        point: req.body.point,
+        isambassador: req.body.isambassador,
+      };
+      const user = await User.update(body, {
+        where: {
+          id: id,
+        },
       });
-    });
-};
+      res.status(200).send({
+        status: "Success",
+        data: user
+      });
+    } catch (error) {
+      res.status(500).send({
+        status: "Error",
+        message: "Some error occurred while update User",
+        data: error
+      });
+    }
+  },
+
+  async delete(req, res) {
+    try {
+      const id = req.params.id;
+      const user = await User.destroy({
+        where: {
+          id: id,
+        },
+      });
+      res.status(200).send({
+        status: "Success",
+        message: `${user} user deleted`
+      })
+    } catch (error) {
+      res.status(500).send({
+        status: "Error",
+        message: "Some error occurred while delete User",
+        data: error
+      });
+    }
+  },
+
+  async findUserProduct(req, res) {
+    try {
+      const id = req.params.id;
+      const user = await User.findByPk(id, {
+        include: [{
+          model: db.product,
+          include: [{
+            model: db.section
+          }]
+        }]
+      })
+      if (user) {
+        res.status(200).send({
+          status: "Success",
+          data: user
+        });
+      } else {
+        res.status(404).send({
+          status: "Success",
+          message: "user product not found"
+        });
+      }
+    } catch (error) {
+      res.status(500).send({
+        status: "Error",
+        message: "Some error occurred while retrieving User",
+        data: error
+      })
+    }
+  }, 
+
+  async findUserOrder(req, res){
+    try {
+      const id = req.params.id;
+      const user = await User.findByPk(id, {
+        include: [{
+          model: db.order
+        }],
+      })
+      if (user) {
+        res.status(200).send({
+          status: "Success",
+          data: user
+        });
+      } else {
+        res.status(404).send({
+          status: "Success",
+          message: "user order product not found"
+        });
+      }
+    } catch (error){
+        res.status(500).send({
+          status: "Error",
+          message: "Some error occurred while retrieving user Order",
+          data: error
+        })
+    }
+  }
+}

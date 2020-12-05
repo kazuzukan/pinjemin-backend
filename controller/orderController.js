@@ -2,103 +2,128 @@ const db = require("../models");
 const Order = db.order;
 // const Op = db.sequelize.Op;
 
-exports.findAllOrder = (req, res) => {
-  Order.findAll()
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
+module.exports = {
+  async findAllOrder(req, res) {
+    try {
+      const order = await Order.findAll();
+      res.status(200).send({
+        status: "Success",
+        data: order
+      })
+    } catch (error) {
       res.status(500).send({
-        message: err.message || "Some error occurred while retrieving Users.",
+        status: "error",
+        message: "Some error occured while retrieving order",
+        data: error
+      })
+    }
+  },
+
+  async findOne(req, res) {
+    try {
+      const id = req.params.id;
+      const order = await Order.findByPk(id, {
+        include: [{
+          model: db.product
+        },{
+          model: db.users
+        }]
       });
-    });
-};
-
-exports.findOne = (req, res) => {
-  const id = req.params.id;
-
-  Order.findByPk(id)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
+      if (order) {
+        res.status(200).send({
+          status: "Success",
+          data: order
+        });
+      } else {
+        res.status(404).send({
+          status: "Success",
+          message: "Order not found"
+        });
+      }
+    } catch (error) {
       res.status(500).send({
-        message: "Error retrieving User with id =" + id,
+        status: "Error",
+        message: "Some error occurred while retrieving order",
+        data: error
+      })
+    }
+  },
+
+  async create(req, res) {
+    try {
+      const body = {
+        name: req.body.name,
+        address: req.body.address,
+        starDate: req.body.starDate,
+        endDate: req.body.endDate,
+        point: req.body.point,
+        status: req.body.status,
+        userId: req.body.userId,
+        productId: req.body.productId
+      };
+      const order = await Order.create(body);
+      res.status(200).send({
+        status: "Success",
+        data: order
       });
-    });
-};
-
-exports.createOrder = (req, res) => {
-  //constructor
-  const order = {
-    name: req.body.name,
-    address: req.body.address,
-    starDate: req.body.starDate,
-    endDate: req.body.endDate,
-    point: req.body.point,
-    status: req.body.status,
-    userId: req.body.userId,
-    productId: req.body.productId
-  };
-
-  Order.create(order)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
+    } catch (error) {
       res.status(500).send({
-        message: err.message || "Error udpate User with id =" + id,
+        status: "Error",
+        message: "Some error occurred while create order",
+        data: error
+      })
+    }
+  },
+
+  async update(req, res) {
+    try {
+      const id = req.params.id;
+      const body = {
+        name: req.body.name,
+        address: req.body.address,
+        starDate: req.body.starDate,
+        endDate: req.body.endDate,
+        point: req.body.point,
+        status: req.body.status,
+        userId: req.body.userId,
+        productId: req.body.productId
+      };
+      const order = await Order.update(body, {
+        where: {
+          id: id,
+        },
       });
-    });
-};
-
-exports.updateOrder = (req, res) => {
-  const id = req.params.id;
-
-  //constructor
-  const order = {
-    name: req.body.name,
-    address: req.body.address,
-    starDate: req.body.starDate,
-    endDate: req.body.endDate,
-    point: req.body.point,
-    status: req.body.status,
-    userId: req.body.userId,
-    productId: req.body.productId
-  };
-
-  Order.update(order, {
-    where: {
-      id: id,
-    },
-  })
-    .then((data) => {
-      res.json({
-        message: "user updated",
+      res.status(200).send({
+        status: "Success",
+        data: order
       });
-    })
-    .catch((err) => {
+    } catch (error) {
       res.status(500).send({
-        message: err.message || "Error udpate User with id =" + id,
+        status: "Error",
+        message: "Some error occurred while update order",
+        data: error
       });
-    });
-};
+    }
+  },
 
-exports.deleteOrder = (req, res) => {
-  const id = req.params.id;
-
-  Order.destroy({
-    where: {
-      id: id,
-    },
-  })
-    .then((data) => {
-      res.send({ message: `${data} user deleted` });
-    })
-    .catch((err) => {
+  async delete(req, res) {
+    try {
+      const id = req.params.id;
+      const order = await Order.destroy({
+        where: {
+          id: id,
+        },
+      });
+      res.status(200).send({
+        status: "Success",
+        message: `${order} order deleted`
+      })
+    } catch (error) {
       res.status(500).send({
-        message:
-          err.message || "Some error occurred while removing all tutorials.",
+        status: "Error",
+        message: "Some error occurred while delete order",
+        data: error
       });
-    });
-};
+    }
+  },
+}

@@ -4,7 +4,10 @@ const cors = require('cors')
 const app = express();
 const db = require('./models');
 
-const port = process.env.PORT || 3000;
+const config = {
+    PORT: process.env.PORT || '3000',
+    ENV: process.env.NODE_ENV || 'development',
+}
 
 require('dotenv').config();
 app.use(cors());
@@ -27,5 +30,6 @@ db.sequelize.sync().then(()=>{
 const route = require('./routes/index');
 route(app);
 
-app.listen(port);
-console.log('API server started on: ' + port);
+app.listen(config.PORT, () => {
+    console.log(`starting ${config.ENV} server at http://localhost:${config.PORT}`);
+});

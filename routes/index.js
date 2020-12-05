@@ -30,65 +30,72 @@ module.exports = (app) => {
   app.get("/user/:id", user.findOne);
 
   //Create User
-  app.post("/user", user.createUser);
+  app.post("/user", user.create);
 
   //Update User
-  app.put("/user/:id", user.updateUser);
+  app.put("/user/:id", user.update);
 
   //Delete User
-  app.delete("/user/:id", user.deleteUser);
+  app.delete("/user/:id", user.delete);
+
 
   //Product
   // All product
   app.get("/product", product.findAllProduct);
 
   // Product with section information
-  app.get("/product-section", product.findwithSection);
+  app.get("/product-section", product.getAllRequestProduct);
 
   // All Request product
-  app.get("/request-product", product.findRequestProduct);
+  // app.get("/request-product", product.findRequestProduct);
 
   // Find One product
   app.get("/product/:id", product.findOne);
 
   // Create product
-  app.post("/product", product.createProduct);
+  app.post("/product", product.create);
 
   // Update product
-  app.put("/product/:id", product.updateProduct);
+  app.put("/product/:id", product.update);
 
   // Delete product
-  app.delete("/product/:id", product.deleteProduct);
+  app.delete("/product/:id", product.delete);
 
   // Section
   // Find All Section
   app.get("/section", section.findAllSection);
 
-  // Find All Request product in section
-  app.get("/request-section", section.findRequestSection);
+  // get one Section
+  app.get("/section/:id", section.findOne);
 
   // Find All Request product in section
-  app.get("/offer-section", section.findOfferSection);
+  app.get("/request-section", section.getAllRequestSection);
+
+  // Find All Request product in section
+  app.get("/offer-section", section.getAllOfferSection);
 
   // Create Product Section
-  app.post("/section", section.createSection);
+  app.post("/section", section.create);
 
   // Update Product Section 
-  app.put("/section/:id", section.updateSection);
+  app.put("/section/:id", section.update);
 
   //delete Product Section
-  app.delete("/section/:id", section.deleteSection);
+  app.delete("/section/:id", section.delete);
 
   //Order
   // All Order
   app.get("/order", order.findAllOrder);
 
+  // All Order
+  app.get("/order/:id", order.findOne);
+
   // create Order
-  app.post("/order", order.createOrder);
+  app.post("/order", order.create);
 
   // Update Order 
-  app.put("/order/:id", order.updateOrder);
+  app.put("/order/:id", order.update);
 
   //delete Order
-  app.delete("/order/:id", order.deleteOrder);
+  app.delete("/order/:id", order.delete);
 };
