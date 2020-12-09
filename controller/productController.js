@@ -56,11 +56,13 @@ module.exports = {
       };
       const product = await Product.create(body);
       res.status(200).send({
+        is_success: true,
         status: "Success",
         data: product
       });
     } catch (error) {
       res.status(500).send({
+        is_success: false,
         status: "Error",
         message: "Some error occurred while create product",
         data: error
@@ -86,11 +88,13 @@ module.exports = {
         },
       });
       res.status(200).send({
+        is_success: true,
         status: "Success",
         data: product
       });
     } catch (error) {
       res.status(500).send({
+        is_success: false,
         status: "Error",
         message: "Some error occurred while update product",
         data: error
@@ -107,11 +111,13 @@ module.exports = {
         },
       });
       res.status(200).send({
+        is_success: true,
         status: "Success",
         message: `${product} product deleted`
       })
     } catch (error) {
       res.status(500).send({
+        is_success: false,
         status: "Error",
         message: "Some error occurred while delete product",
         data: error
@@ -128,11 +134,13 @@ module.exports = {
         }]
       })
       res.status(200).send({
+        is_success: true,
         status: "Success",
         data: product,
       })
     } catch (error) {
       res.status(500).send({
+        is_success: false,
         status: "Error",
         message: "Some error occurred while retrieving User",
         data: error

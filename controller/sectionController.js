@@ -123,11 +123,13 @@ module.exports = {
         }]
       })
       res.status(200).send({
+        is_success: true,
         status: "Success",
         data: section,
       })
     } catch (error) {
       res.status(500).send({
+        is_success: false,
         status: "Error",
         message: "Some error occurred while retrieving User",
         data: error
@@ -145,11 +147,13 @@ module.exports = {
         }]
       })
       res.status(200).send({
+        is_success: true,
         status: "Success",
         data: section,
       })
     } catch (error) {
       res.status(500).send({
+        is_success: false,
         status: "Error",
         message: "Some error occurred while retrieving User",
         data: error
