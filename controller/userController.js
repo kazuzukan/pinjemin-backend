@@ -166,22 +166,35 @@ module.exports = {
       const id = req.params.id;
       const user = await User.findByPk(id, {
         include: [{
-          model: db.order
+          model: db.order,
+          include: [{
+            model: db.product,
+            include: [{
+              model: db.users
+            },
+            {
+              model: db.section
+            }
+          ]
+          }]
         }],
       })
       if (user) {
         res.status(200).send({
+          is_success: true,
           status: "Success",
           data: user
         });
       } else {
         res.status(404).send({
+          is_success: false,
           status: "Success",
           message: "user order product not found"
         });
       }
     } catch (error){
         res.status(500).send({
+          is_success: false,
           status: "Error",
           message: "Some error occurred while retrieving user Order",
           data: error

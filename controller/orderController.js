@@ -7,11 +7,13 @@ module.exports = {
     try {
       const order = await Order.findAll();
       res.status(200).send({
+        is_success: true,
         status: "Success",
         data: order
       })
     } catch (error) {
       res.status(500).send({
+        is_success: false,
         status: "error",
         message: "Some error occured while retrieving order",
         data: error
@@ -31,17 +33,20 @@ module.exports = {
       });
       if (order) {
         res.status(200).send({
+          is_success: true,
           status: "Success",
           data: order
         });
       } else {
         res.status(404).send({
-          status: "Success",
+          is_success: false,
+          status: "Error",
           message: "Order not found"
         });
       }
     } catch (error) {
       res.status(500).send({
+        is_success: false,
         status: "Error",
         message: "Some error occurred while retrieving order",
         data: error
@@ -54,7 +59,7 @@ module.exports = {
       const body = {
         name: req.body.name,
         address: req.body.address,
-        starDate: req.body.starDate,
+        starDate: req.body.startDate,
         endDate: req.body.endDate,
         point: req.body.point,
         status: req.body.status,
@@ -63,11 +68,13 @@ module.exports = {
       };
       const order = await Order.create(body);
       res.status(200).send({
+        is_success: true,
         status: "Success",
         data: order
       });
     } catch (error) {
       res.status(500).send({
+        is_success: false,
         status: "Error",
         message: "Some error occurred while create order",
         data: error
@@ -81,7 +88,7 @@ module.exports = {
       const body = {
         name: req.body.name,
         address: req.body.address,
-        starDate: req.body.starDate,
+        starDate: req.body.startDate,
         endDate: req.body.endDate,
         point: req.body.point,
         status: req.body.status,
@@ -94,11 +101,13 @@ module.exports = {
         },
       });
       res.status(200).send({
+        is_success: true,
         status: "Success",
         data: order
       });
     } catch (error) {
       res.status(500).send({
+        is_success: false,
         status: "Error",
         message: "Some error occurred while update order",
         data: error
