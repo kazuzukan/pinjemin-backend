@@ -21,7 +21,7 @@ describe('Unit test GET /order ', () => {
             .get('/order')
         expect(res.body.data[0]).to.have.property('name');
         expect(res.body.data[0]).to.have.property('address');
-        expect(res.body.data[0]).to.have.property('starDate');
+        expect(res.body.data[0]).to.have.property('startDate');
         expect(res.body.data[0]).to.have.property('endDate');
         expect(res.body.data[0]).to.have.property('point');
         expect(res.body.data[0]).to.have.property('status');
@@ -37,7 +37,7 @@ describe(' Unit test GET /order/:id ', () => {
         expect(res).to.have.status('200');
         expect(res.body.data).to.have.property('name');
         expect(res.body.data).to.have.property('address');
-        expect(res.body.data).to.have.property('starDate');
+        expect(res.body.data).to.have.property('startDate');
         expect(res.body.data).to.have.property('endDate');
         expect(res.body.data).to.have.property('point');
         expect(res.body.data).to.have.property('status');

@@ -161,12 +161,13 @@ module.exports = {
     }
   }, 
 
-  async findUserOrder(req, res){
+  async findUserLoan(req, res){
     try {
       const id = req.params.id;
       const user = await User.findByPk(id, {
         include: [{
-          model: db.order,
+          model: db.loan, 
+          as: 'loansFromUser',
           include: [{
             model: db.product,
             include: [{
@@ -177,7 +178,22 @@ module.exports = {
             }
           ]
           }]
-        }],
+          },
+          {
+            model: db.loan, 
+            as: 'loansToUser',
+            include: [{
+              model: db.product,
+              include: [{
+                model: db.users
+              },
+              {
+                model: db.section
+              }
+            ]
+            }]
+          }
+        ]
       })
       if (user) {
         res.status(200).send({
@@ -189,14 +205,14 @@ module.exports = {
         res.status(404).send({
           is_success: false,
           status: "Success",
-          message: "user order product not found"
+          message: "user loans product not found"
         });
       }
     } catch (error){
         res.status(500).send({
           is_success: false,
           status: "Error",
-          message: "Some error occurred while retrieving user Order",
+          message: "Some error occurred while retrieving user's loan",
           data: error
         })
     }

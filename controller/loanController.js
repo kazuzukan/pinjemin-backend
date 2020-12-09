@@ -1,21 +1,21 @@
 const db = require("../models");
-const Order = db.order;
+const Loan = db.loan;
 // const Op = db.sequelize.Op;
 
 module.exports = {
-  async findAllOrder(req, res) {
+  async findAllLoan(req, res) {
     try {
-      const order = await Order.findAll();
+      const loan = await Loan.findAll();
       res.status(200).send({
         is_success: true,
         status: "Success",
-        data: order
+        data: loan
       })
     } catch (error) {
       res.status(500).send({
         is_success: false,
         status: "error",
-        message: "Some error occured while retrieving order",
+        message: "Some error occured while retrieving loans",
         data: error
       })
     }
@@ -24,31 +24,31 @@ module.exports = {
   async findOne(req, res) {
     try {
       const id = req.params.id;
-      const order = await Order.findByPk(id, {
+      const loan = await Loan.findByPk(id, {
         include: [{
           model: db.product
         },{
           model: db.users
         }]
       });
-      if (order) {
+      if (loan) {
         res.status(200).send({
           is_success: true,
           status: "Success",
-          data: order
+          data: loan
         });
       } else {
         res.status(404).send({
           is_success: false,
           status: "Error",
-          message: "Order not found"
+          message: "Loans not found"
         });
       }
     } catch (error) {
       res.status(500).send({
         is_success: false,
         status: "Error",
-        message: "Some error occurred while retrieving order",
+        message: "Some error occurred while retrieving loans",
         data: error
       })
     }
@@ -59,24 +59,25 @@ module.exports = {
       const body = {
         name: req.body.name,
         address: req.body.address,
-        starDate: req.body.startDate,
+        startDate: req.body.startDate,
         endDate: req.body.endDate,
         point: req.body.point,
         status: req.body.status,
-        userId: req.body.userId,
+        ownersUserId: req.body.ownersUserId,
+        loanersUserId: req.body.loanersUserId,
         productId: req.body.productId
       };
-      const order = await Order.create(body);
+      const loan = await Loan.create(body);
       res.status(200).send({
         is_success: true,
         status: "Success",
-        data: order
+        data: loan
       });
     } catch (error) {
       res.status(500).send({
         is_success: false,
         status: "Error",
-        message: "Some error occurred while create order",
+        message: "Some error occurred while create loans",
         data: error
       })
     }
@@ -88,14 +89,14 @@ module.exports = {
       const body = {
         name: req.body.name,
         address: req.body.address,
-        starDate: req.body.startDate,
+        startDate: req.body.startDate,
         endDate: req.body.endDate,
         point: req.body.point,
         status: req.body.status,
         userId: req.body.userId,
         productId: req.body.productId
       };
-      const order = await Order.update(body, {
+      const loan = await Loan.update(body, {
         where: {
           id: id,
         },
@@ -103,13 +104,13 @@ module.exports = {
       res.status(200).send({
         is_success: true,
         status: "Success",
-        data: order
+        data: loan
       });
     } catch (error) {
       res.status(500).send({
         is_success: false,
         status: "Error",
-        message: "Some error occurred while update order",
+        message: "Some error occurred while update loans",
         data: error
       });
     }
@@ -118,19 +119,19 @@ module.exports = {
   async delete(req, res) {
     try {
       const id = req.params.id;
-      const order = await Order.destroy({
+      const loan = await Loan.destroy({
         where: {
           id: id,
         },
       });
       res.status(200).send({
         status: "Success",
-        message: `${order} order deleted`
+        message: `${loan} loan deleted`
       })
     } catch (error) {
       res.status(500).send({
         status: "Error",
-        message: "Some error occurred while delete order",
+        message: "Some error occurred while delete loan",
         data: error
       });
     }

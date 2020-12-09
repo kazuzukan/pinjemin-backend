@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     product.belongsTo(models.users);
     product.hasOne(models.section);
-    product.hasMany(models.order);
+    product.hasMany(models.loan);
   };
   return product;
 };

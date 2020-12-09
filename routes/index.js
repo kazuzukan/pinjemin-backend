@@ -2,7 +2,7 @@ module.exports = (app) => {
   const user = require("../controller/userController");
   const product = require("../controller/productController");
   const section = require("../controller/sectionController");
-  const order = require("../controller/orderController");
+  const loan = require("../controller/loanController");
   const auth = require("../controller/authController");
 
   // Default
@@ -20,11 +20,11 @@ module.exports = (app) => {
   // All User
   app.get("/user", user.findAllUser);
 
-  // User Product
+  // User's Product
   app.get("/userproduct/:id", user.findUserProduct);
 
-  // User Order
-  app.get("/userorder/:id", user.findUserOrder);
+  // User's Loan
+  app.get("/user/loan/:id", user.findUserLoan);
 
   // Find One User
   app.get("/user/:id", user.findOne);
@@ -83,19 +83,19 @@ module.exports = (app) => {
   //delete Product Section
   app.delete("/section/:id", section.delete);
 
-  //Order
-  // All Order
-  app.get("/order", order.findAllOrder);
+  //Loan
+  // All Loan
+  app.get("/loan", loan.findAllLoan);
 
-  // All Order
-  app.get("/order/:id", order.findOne);
+  // find one Loan
+  app.get("/loan/:id", loan.findOne);
 
-  // create Order
-  app.post("/order", order.create);
+  // create Loan
+  app.post("/loan", loan.create);
 
-  // Update Order 
-  app.put("/order/:id", order.update);
+  // Update Loan 
+  app.put("/loan/:id", loan.update);
 
-  //delete Order
-  app.delete("/order/:id", order.delete);
+  //delete Loan
+  app.delete("/loan/:id", loan.delete);
 };

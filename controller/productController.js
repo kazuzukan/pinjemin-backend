@@ -164,13 +164,13 @@ module.exports = {
   //     } else {
   //       res.status(404).send({
   //         status: "Success",
-  //         message: "product order product not found"
+  //         message: "product loan product not found"
   //       });
   //     }
   //   } catch (error){
   //       res.status(500).send({
   //         status: "Error",
-  //         message: "Some error occurred while retrieving product order",
+  //         message: "Some error occurred while retrieving product loan",
   //         data: error
   //       })
   //   }
