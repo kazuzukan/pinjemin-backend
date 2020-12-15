@@ -22,7 +22,7 @@ db.sequelize.sync().then(()=>{
     console.log('Database Synced')
 })
 
-//for reset database
+// for reset database
 // db.sequelize.sync({ force: true }).then(() => {
 //     console.log("Drop and re-sync db.");
 // });
