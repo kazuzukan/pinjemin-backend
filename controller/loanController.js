@@ -27,8 +27,6 @@ module.exports = {
       const loan = await Loan.findByPk(id, {
         include: [{
           model: db.product
-        },{
-          model: db.users
         }]
       });
       if (loan) {
@@ -96,16 +94,30 @@ module.exports = {
         userId: req.body.userId,
         productId: req.body.productId
       };
-      const loan = await Loan.update(body, {
+      const response = await Loan.update(body, {
         where: {
           id: id,
-        },
+        }
       });
-      res.status(200).send({
-        is_success: true,
-        status: "Success",
-        data: loan
-      });
+      if (response) {  
+        const loan = await Loan.findByPk(id, {
+          include: [{
+            model: db.product
+          }]
+        });
+        
+        res.status(200).send({
+          is_success: true,
+          status: "Success",
+          data: loan
+        });
+      } else {
+        res.status(404).send({
+          is_success: false,
+          status: "Error",
+          message: "Loans not found"
+        });
+      }
     } catch (error) {
       res.status(500).send({
         is_success: false,
